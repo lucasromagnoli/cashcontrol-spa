@@ -1,24 +1,6 @@
-# cashcontrol
+# Cash Control - Web
+Aplicação responsável por gerenciar despesas pessoais. Descomplicando a vida e proporcionando satisfação em ter o controle de suas finanças. Confira também o projeto [cashcontrol-api](https://github.com/lucasromagnoli/cashcontrol-api)
 
-## Project setup
-```
-npm install
-```
+## Autores
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+* **Lucas Ramos Romagnoli** - [lucasromagnoli](https://github.com/lucasromagnoli)
