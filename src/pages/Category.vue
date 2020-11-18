@@ -6,40 +6,40 @@
       </v-card-title>
 
       <v-card-title
-        class="align-end">
+          class="align-end">
         <v-text-field
-          append-icon="mdi-magnify"
-          label="Pesquisar"
-          v-model="search"
-          single-line
-          hide-details
+            append-icon="mdi-magnify"
+            label="Pesquisar"
+            v-model="search"
+            single-line
+            hide-details
         ></v-text-field>
         <v-spacer></v-spacer>
 
         <v-btn
-          color="primary"
+            color="primary"
         >
           New Category
         </v-btn>
       </v-card-title>
       <v-data-table
-        dense
-        :headers="headers"
-        :items="categories"
-        :loading="loading"
-        :search="search"
-        item-key="name"
-        class="elevation-1"
+          dense
+          :headers="headers"
+          :items="categories"
+          :loading="loading"
+          :search="search"
+          item-key="name"
+          class="elevation-1"
       ></v-data-table>
     </v-card>
   </v-container>
 </template>
 
 <script>
-import {api} from "@/service/api";
+import {api} from '@/service/api';
 
 export default {
-  name: "Category",
+  name: 'Category',
   data: () => ({
     loading: true,
     search: '',
