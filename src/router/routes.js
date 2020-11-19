@@ -1,7 +1,8 @@
 import homePage from '@/pages/Home';
 import categoryPage from '@/pages/Category';
-import OriginForm from '@/pages/origens/OriginForm';
-import OriginList from '@/pages/origens/OriginList';
+import OriginForm from '@/pages/origins/OriginForm';
+import OriginList from '@/pages/origins/OriginList';
+import IncomeForm from '@/pages/incomes/IncomeForm';
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     name: 'originList',
     component: OriginList,
   },
+  {
+    path: '/income',
+    name: 'incomeForm',
+    component: IncomeForm
+  }
 ]
 
 export default routes;
