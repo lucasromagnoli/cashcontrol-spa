@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card>
-      <v-card-title>Cadastrar Origem</v-card-title>
+      <v-card-title>Cadastrar Receita</v-card-title>
       <v-container>
         <v-text-field
             label="Nome"
@@ -53,7 +53,7 @@
               width="125px"
               color="primary"
               class="ml-10"
-              :to="{name: 'originList'}"
+              :to="{name: 'incomeList'}"
           >
             Listar
           </v-btn>
