@@ -1,18 +1,33 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="home">
+    <div id="title">
+      <h1>Cash Control - Web Version</h1>
+      <p>Aplicação responsável por gerenciar despesas pessoais. Descomplicando a vida e proporcionando satisfação em ter o
+        controle de suas finanças.
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
+  name: 'Home'
 }
 </script>
+
+<style lang="scss" scoped>
+#title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+
+  h1 {
+    font-size: 3em;
+  }
+
+  p {
+    font-size: 1.2em;
+  }
+}
+</style>
