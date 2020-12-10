@@ -5,6 +5,44 @@
         <v-avatar class="mb-5" color="grey darken-1" size="64"></v-avatar>
         <div>lucasr.romagnoli@gmail.com</div>
       </v-sheet>
+      <v-list>
+        <v-list-item
+          v-for="(link, index) in orphanLinks"
+          :key="index + link"
+          :to="link.route"
+          exact
+          link
+        >
+          <v-list-item-icon>
+            <v-icon v-text="link.icon" />
+          </v-list-item-icon>
+
+          <v-list-item-title v-text="link.title" />
+        </v-list-item>
+
+        <v-list-group
+          v-for="(link, index) in fatherLinks"
+          :key="index"
+          :value="false"
+          :prepend-icon="link.icon"
+        >
+          <template v-slot:activator>
+            <v-list-item-title v-text="link.title"></v-list-item-title>
+          </template>
+
+          <v-list-item
+            v-for="(children, indexChildren) in link.childrens"
+            :key="indexChildren + children"
+            :to="children.route"
+            link
+          >
+            <v-list-item-icon>
+              <v-icon v-text="children.icon"></v-icon>
+            </v-list-item-icon>
+            <v-list-item-title v-text="children.title"></v-list-item-title>
+          </v-list-item>
+        </v-list-group>
+      </v-list>
     </v-navigation-drawer>
 
     <v-app-bar app>
@@ -18,8 +56,59 @@
 export default {
   data() {
     return {
-      drawer: false,
+      drawer: null,
+      links: [
+        {
+          icon: 'mdi-home',
+          title: 'Home',
+          route: { name: 'Home' },
+        },
+        {
+          icon: 'mdi-home',
+          title: 'Categorias',
+          route: { name: 'Category' },
+        },
+        {
+          icon: 'mdi-home',
+          title: 'Subcategorias',
+          route: { name: 'Subcategory' },
+        },
+        {
+          icon: 'mdi-home',
+          title: 'Origens',
+          route: { name: 'Origin' },
+        },
+        {
+          icon: 'mdi-home',
+          title: 'Transações',
+          childrens: [
+            {
+              icon: 'mdi-inbox-arrow-down',
+              title: 'Movimentações',
+              route: { name: 'Transaction' },
+            },
+            {
+              icon: 'mdi-inbox-arrow-down',
+              title: 'Receitas',
+              route: { name: 'Income' },
+            },
+            {
+              icon: 'mdi-inbox-arrow-down',
+              title: 'Despesas',
+              route: { name: 'Expense' },
+            },
+          ],
+        },
+      ],
     };
+  },
+  computed: {
+    orphanLinks() {
+      return this.links.filter((link) => !link.childrens || link.childrens.length === 0);
+    },
+    fatherLinks() {
+      return this.links.filter((link) => link.childrens && link.childrens.length !== 0);
+    },
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <the-header-and-sidebar :drawer="drawer" />
+    <the-header-and-sidebar />
     <v-main><router-view></router-view></v-main>
   </v-app>
 </template>
