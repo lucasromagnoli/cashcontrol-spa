@@ -2,7 +2,8 @@ import Home from '@/views/Home.vue';
 import PageNotFound from '@/views/PageNotFound.vue';
 import Category from '@/views/Category.vue';
 import Subcategory from '@/views/Subcategory.vue';
-import Origin from '@/views/Origin.vue';
+import OriginList from '@/views/origin/OriginList.vue';
+import OriginForm from '@/views/origin/OriginForm.vue';
 import Income from '@/views/Income.vue';
 import Expense from '@/views/Expense.vue';
 import Transaction from '@/views/Transaction.vue';
@@ -27,10 +28,18 @@ export default [
     meta: { title: 'Subcategorias' },
   },
   {
-    path: '/origin',
-    name: 'Origin',
-    component: Origin,
+    path: '/origin/list',
+    alias: ['/origin'],
+    name: 'OriginList',
+    component: OriginList,
     meta: { title: 'Origens' },
+  },
+  {
+    path: '/origin/form',
+    alias: ['/origin/add'],
+    name: 'OriginForm',
+    component: OriginForm,
+    meta: { title: 'Origens - Cadastrar' },
   },
   {
     path: '/transaction',

@@ -34,6 +34,7 @@
             v-for="(children, indexChildren) in link.childrens"
             :key="indexChildren + children"
             :to="children.route"
+            exact
             link
           >
             <v-list-item-icon>
@@ -76,7 +77,18 @@ export default {
         {
           icon: 'mdi-home',
           title: 'Origens',
-          route: { name: 'Origin' },
+          childrens: [
+            {
+              icon: 'mdi-inbox-arrow-down',
+              title: 'Cadastrar',
+              route: { name: 'OriginForm' },
+            },
+            {
+              icon: 'mdi-inbox-arrow-down',
+              title: 'Listar',
+              route: { name: 'OriginList' },
+            },
+          ],
         },
         {
           icon: 'mdi-home',
