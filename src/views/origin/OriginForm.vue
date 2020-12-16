@@ -16,6 +16,7 @@ export default {
   methods: {
     handleClickInsert() {
       // TODO(14/12/2020): Realmente inserir a Origem. Consumindo o back-end e tratando retorno.
+      this.$store.commit('origin/INSERT_ORIGIN', { id: 3, name: this.insert.name });
       console.log('handleClickInsert');
     },
   },

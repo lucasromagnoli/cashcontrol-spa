@@ -10,7 +10,7 @@
     </modal-default>
     <v-data-table
       :headers="dataTable.headers"
-      :items="dataTable.data"
+      :items="originVuex.dataTable"
       :items-per-page="5"
       :loading="dataTable.loading"
       class="elevation-1"
@@ -22,11 +22,18 @@
         <v-icon small @click="handleClickDelete(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
+
+    <h3>Última atualização:</h3>
+    {{ lastUpdate }}
   </v-container>
 </template>
 
 <script>
 import ModalDefault from '@/components/layout/ModalDefault.vue';
+import { dateDifferenceInMinutes, formatDate } from '@/core/utils';
+import config from '@/core/config';
+import { mapGetters } from 'vuex';
+import OriginService from '@/services/origin-service';
 
 export default {
   components: { ModalDefault },
@@ -41,7 +48,7 @@ export default {
         name: '',
       },
       dataTable: {
-        loading: false,
+        loading: true,
         headers: [
           {
             text: 'Código',
@@ -52,16 +59,22 @@ export default {
           { text: 'Nome', value: 'name' },
           { text: 'Ações', value: 'actions', sortable: false },
         ],
-        data: [],
       },
     };
   },
   computed: {
+    ...mapGetters({
+      originVuex: 'origin/getDataTable',
+    }),
     title() {
       return 'Confirmar Exclusão';
     },
     body() {
       return `Você tem certeza que deseja remover a Origem <strong>${this.delete.selected?.name}</strong> ?`;
+    },
+    lastUpdate() {
+      const { lastUpdate } = this.originVuex;
+      return lastUpdate ? formatDate(lastUpdate) : null;
     },
   },
   methods: {
@@ -72,6 +85,7 @@ export default {
     handleCallbackModal(choice) {
       if (choice) {
         // TODO(14/12/2020): Realmente remover a Origem. Consumindo o back-end e tratando retorno.
+        this.$store.commit('origin/DELETE_ORIGIN', this.delete.selected);
         console.log(`${this.delete.selected.name} removido com sucesso!`);
       }
 
@@ -80,6 +94,22 @@ export default {
     handleClickUpdate({ id, name }) {
       console.log(id, name);
     },
+  },
+  async mounted() {
+    const diffInMinus = dateDifferenceInMinutes(new Date(), this.originVuex.lastUpdate);
+
+    if (Number.isNaN(diffInMinus) || diffInMinus >= config.ORIGIN_DATATABLE_EXPIRE_MINUTES) {
+      // TODO(15/12/2020): Realmentar realizar a requisição ao back-end e atualizar
+      this.dataTable.loading = true;
+      const { apiContent: origins } = await OriginService.get({
+        endpoint: '/',
+        query: { page: 0, size: 100 },
+      });
+      this.$store.commit('origin/BOOTSTRAP_ORIGIN', origins);
+      console.log('Atualizando lista de origens');
+    }
+
+    this.dataTable.loading = false;
   },
 };
 </script>
