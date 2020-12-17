@@ -11,13 +11,24 @@
 </template>
 
 <script>
+import OriginService from '@/services/origin-service';
+
 export default {
   name: 'OriginForm',
   methods: {
-    handleClickInsert() {
-      // TODO(14/12/2020): Realmente inserir a Origem. Consumindo o back-end e tratando retorno.
-      this.$store.commit('origin/INSERT_ORIGIN', { id: 3, name: this.insert.name });
-      console.log('handleClickInsert');
+    async handleClickInsert() {
+      try {
+        const { apiContent: origin } = await OriginService.post({
+          endpoint: '/',
+          payload: {
+            name: this.insert.name,
+          },
+        });
+        this.$store.commit('origin/INSERT_ORIGIN', origin);
+      } catch (error) {
+        // TODO(16/12/2020): Tratar erros da api.
+        // Só vai ser possível após implementar a validação de formulários
+      }
     },
   },
   data() {
