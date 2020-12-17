@@ -1,4 +1,5 @@
 import qs from 'qs';
+import ErrorWrapper from './error-wrapper';
 import HttpClient from './http-client';
 import ResponseWrapper from './response-wrapper';
 
@@ -19,14 +20,20 @@ export default class BaseService {
       const response = await this.httpClient.axiosIntance.get(this.handleEndpoint(endpoint, query));
       return new ResponseWrapper(response);
     } catch (error) {
-      // TODO(16/12/2020): Criar o error-wrapper
-      console.log(error);
-      return error;
+      throw new ErrorWrapper(error);
     }
   }
 
   async post({ endpoint, query, payload }) {
-    return this.httpClient.axiosIntance.post(this.handleEndpoint(endpoint, query), payload);
+    try {
+      const response = await this.httpClient.axiosIntance.post(
+        this.handleEndpoint(endpoint, query),
+        payload,
+      );
+      return new ResponseWrapper(response);
+    } catch (error) {
+      throw new ErrorWrapper(error);
+    }
   }
 
   async put({ endpoint, query, payload }) {
