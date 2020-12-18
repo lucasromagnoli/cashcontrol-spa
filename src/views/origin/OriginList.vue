@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <h2>Origem Listar</h2>
+    <slot name="messages"></slot>
     <modal-default
       :title="this.title"
       :body="this.body"
@@ -30,7 +31,7 @@
 
 <script>
 import ModalDefault from '@/components/layout/ModalDefault.vue';
-import { dateDifferenceInMinutes, formatDate } from '@/core/utils';
+import { dateDifferenceInMinutes, formatDate, insertMessage } from '@/core/utils';
 import config from '@/core/config';
 import { mapGetters } from 'vuex';
 import OriginService from '@/services/origin-service';
@@ -86,7 +87,11 @@ export default {
       if (choice) {
         // TODO(14/12/2020): Realmente remover a Origem. Consumindo o back-end e tratando retorno.
         this.$store.commit('origin/DELETE_ORIGIN', this.delete.selected);
-        console.log(`${this.delete.selected.name} removido com sucesso!`);
+        insertMessage({
+          type: 'success',
+          text: `${this.delete.selected.name} removido com sucesso!`,
+          dismissible: true,
+        });
       }
 
       this.selected = null;
@@ -97,8 +102,16 @@ export default {
   },
   async mounted() {
     const diffInMinus = dateDifferenceInMinutes(new Date(), this.originVuex.lastUpdate);
+    /* eslint-disable */
 
-    if (Number.isNaN(diffInMinus) || diffInMinus >= config.ORIGIN_DATATABLE_EXPIRE_MINUTES) {
+    if (
+      Number.isNaN(diffInMinus) ||
+      diffInMinus >= config.ORIGIN_DATATABLE_EXPIRE_MINUTES ||
+      !originVuex.dataTable
+    ) {
+      // TODO(18/12/2020): Corrigir bug do eslint+prettier referente a posição dos operadores lógicos
+      /* eslint-enable */
+
       // TODO(15/12/2020): Realmentar realizar a requisição ao back-end e atualizar
       this.dataTable.loading = true;
       const { apiContent: origins } = await OriginService.get({

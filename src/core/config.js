@@ -3,4 +3,7 @@ export default {
   apiClassNames: {
     PAGE_CLASS: 'PageImpl',
   },
+  events: {
+    INSERT_MESSAGE: 'insert:message',
+  },
 };

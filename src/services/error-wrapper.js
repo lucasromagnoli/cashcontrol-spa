@@ -43,12 +43,28 @@ export default class ErrorWrapper extends Error {
         messageType: axiosError.response.data.message_type,
         contentType: axiosError.response.data.content_type,
         content: axiosError.response.data.content,
+        payload: axiosError.response.data.payload,
       };
+
+      // TODO(18/12/2020): Colocar o ValidationMessage no config
+      if (this.apiData.contentType === 'ValidationMessage') {
+        // TODO(18/12/2020): Criar metódo para verificar string independente do case
+        this.handleValidation();
+      }
+
+      console.log('validation', this.validation);
     } else if (axiosError.request) {
       // A requisição nem chegou a ser realizada.
       this.type = 'request';
     }
 
     this.message = getErrorMessage(this.type, this.status);
+  }
+
+  handleValidation() {
+    this.validation = {
+      field: this.apiData.payload.field,
+      message: this.apiData.payload.message,
+    };
   }
 }

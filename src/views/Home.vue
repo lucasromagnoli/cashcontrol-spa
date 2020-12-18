@@ -1,5 +1,7 @@
 <template>
-  <h1>Home.vue</h1>
+  <div>
+    <h1>Home.vue</h1>
+  </div>
 </template>
 
 <script>
