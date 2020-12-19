@@ -24,7 +24,7 @@ function getErrorMessage({ type, status }) {
       message = 'Service unavailable. Try again later';
       break;
     default:
-      message = 'Something wrong. Client default error message';
+      message = 'Something wrong. Cash Control API is running and healthy? ';
       break;
   }
 
@@ -46,24 +46,30 @@ export default class ErrorWrapper extends Error {
         payload: axiosError.response.data.payload,
       };
 
-      // TODO(18/12/2020): Colocar o ValidationMessage no config
-      if (this.apiData.contentType === 'ValidationMessage') {
+      if (this.isValidationError()) {
         // TODO(18/12/2020): Criar metódo para verificar string independente do case
         this.handleValidation();
       }
-
-      console.log('validation', this.validation);
     } else if (axiosError.request) {
       // A requisição nem chegou a ser realizada.
       this.type = 'request';
     }
 
-    this.message = getErrorMessage(this.type, this.status);
+    this.httpMessage = getErrorMessage(this.type, this.status);
   }
 
   handleValidation() {
     this.validation = {
       [this.apiData.payload.field]: this.apiData.payload.message,
     };
+  }
+
+  getDisplayMessage() {
+    return this.apiData?.message || this.httpMessage;
+  }
+
+  // TODO(18/12/2020): Colocar o ValidationMessage no config
+  isValidationError() {
+    return this.apiData?.contentType === 'ValidationMessage';
   }
 }

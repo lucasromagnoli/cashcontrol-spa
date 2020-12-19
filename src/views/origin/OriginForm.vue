@@ -72,10 +72,12 @@ export default {
         });
         this.clearForm();
       } catch (error) {
-        this.$refs.observer.setErrors(error.validation);
+        if (error.isValidationError()) {
+          this.$refs.observer.setErrors(error.validation);
+        }
         insertMessage({
           type: 'error',
-          text: error.apiData.message,
+          text: error.getDisplayMessage(),
           dismissible: true,
         });
       }
@@ -98,7 +100,7 @@ export default {
         this.$refs.observer.setErrors(error.validation);
         insertMessage({
           type: 'error',
-          text: error.apiData.message,
+          text: error.getDisplayMessage(),
           dismissible: true,
         });
       }
