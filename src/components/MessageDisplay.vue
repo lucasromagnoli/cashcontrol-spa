@@ -1,6 +1,6 @@
 <template>
   <div>
-    <transition-group name="message" tag="v-alert">
+    <transition-group name="message" tag="div">
       <v-alert
         v-for="message in messages"
         :key="message.key"
@@ -54,6 +54,8 @@ export default {
   mounted() {
     window.bus.$on(config.events.INSERT_MESSAGE, this.insertMessage);
     console.log('listening', config.events.INSERT_MESSAGE);
+    window.bus.$on(config.events.CLEAR_MESSAGE, this.clearMessages);
+    console.log('listening', config.events.CLEAR_MESSAGE);
   },
 };
 </script>

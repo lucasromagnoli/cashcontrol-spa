@@ -63,8 +63,7 @@ export default class ErrorWrapper extends Error {
 
   handleValidation() {
     this.validation = {
-      field: this.apiData.payload.field,
-      message: this.apiData.payload.message,
+      [this.apiData.payload.field]: this.apiData.payload.message,
     };
   }
 }

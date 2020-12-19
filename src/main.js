@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import App from './App.vue';
+import './validations';
 import './register-service-worker';
 import router from './router';
 import store from './store';

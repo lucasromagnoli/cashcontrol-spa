@@ -1,25 +1,43 @@
 <template>
-  <v-form>
-    <v-container>
-      <h2>Cadastrar Origem</h2>
-      <slot name="messages"></slot>
-      <v-text-field v-model="origin.name" label="Nome" required></v-text-field>
-      <v-btn color="primary" large @click.prevent="handleClickFormSubmit">{{
-        this.submitLabel
-      }}</v-btn>
-      <v-btn class="ml-10" large @click.prevent="handleClickClear">{{
-        this.clearLabel
-      }}</v-btn>
-    </v-container>
-  </v-form>
+  <validation-observer ref="observer">
+    <v-form>
+      <v-container>
+        <h2>Cadastrar Origem</h2>
+        <slot name="messages"></slot>
+        <validation-provider
+          name="name"
+          rules="required|lengthBetween:3,50"
+          v-slot="{ errors }"
+        >
+          <v-text-field
+            v-model="origin.name"
+            :error-messages="errors"
+            label="Nome"
+            required
+          ></v-text-field>
+        </validation-provider>
+        <v-btn color="primary" large @click.prevent="handleClickFormSubmit">{{
+          this.submitLabel
+        }}</v-btn>
+        <v-btn class="ml-10" large @click.prevent="handleClickClear">{{
+          this.clearLabel
+        }}</v-btn>
+      </v-container>
+    </v-form>
+  </validation-observer>
 </template>
 
 <script>
 import OriginService from '@/services/origin-service';
-import { insertMessage } from '@/core/utils';
+import { ValidationProvider, ValidationObserver } from 'vee-validate';
+import { insertMessage, clearMessages } from '@/core/utils';
 
 export default {
   name: 'OriginForm',
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
   props: {
     mode: {
       default: 'insert',
@@ -31,10 +49,13 @@ export default {
   },
   methods: {
     async handleClickFormSubmit() {
-      if (this.isUpdate) {
-        this.handleClickUpdate();
-      } else {
-        this.handleClickInsert();
+      const isValid = await this.$refs.observer.validate();
+      if (isValid) {
+        if (this.isUpdate) {
+          this.handleClickUpdate();
+        } else {
+          this.handleClickInsert();
+        }
       }
     },
     async handleClickInsert() {
@@ -49,13 +70,12 @@ export default {
           text: `${origin.name} cadastrada com sucesso!`,
           dismissible: true,
         });
-        this.handleClickClear();
+        this.clearForm();
       } catch (error) {
-        // TODO(16/12/2020): Tratar erros da api.
-        // Só vai ser possível concluir após implementar a validação de formulários
+        this.$refs.observer.setErrors(error.validation);
         insertMessage({
           type: 'error',
-          text: error.apiData,
+          text: error.apiData.message,
           dismissible: true,
         });
       }
@@ -72,18 +92,23 @@ export default {
           text: `${origin.name} atualizada com sucesso!`,
           dismissible: true,
         });
-        this.handleClickClear();
+        this.clearForm();
       } catch (error) {
-        // TODO(16/12/2020): Tratar erros da api.
-        // Só vai ser possível concluir após implementar a validação de formulários
+        // TODO(19/12/2020): Pensar maneira de não ter código duplicato com o método de insert
+        this.$refs.observer.setErrors(error.validation);
         insertMessage({
           type: 'error',
-          text: error.apiData,
+          text: error.apiData.message,
           dismissible: true,
         });
       }
     },
     handleClickClear() {
+      clearMessages();
+      this.clearForm();
+    },
+    clearForm() {
+      this.$refs.observer.reset();
       this.form.type = 'insert';
       this.origin = {
         id: null,
