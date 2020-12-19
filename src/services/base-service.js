@@ -37,7 +37,15 @@ export default class BaseService {
   }
 
   async put({ endpoint, query, payload }) {
-    return this.httpClient.axiosIntance.put(this.handleEndpoint(endpoint, query), payload);
+    try {
+      const response = await this.httpClient.axiosIntance.put(
+        this.handleEndpoint(endpoint, query),
+        payload,
+      );
+      return new ResponseWrapper(response);
+    } catch (error) {
+      throw new ErrorWrapper(error);
+    }
   }
 
   async delete({ endpoint, query }) {

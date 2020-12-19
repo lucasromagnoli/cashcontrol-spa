@@ -38,6 +38,7 @@ export default [
     path: '/origin/form',
     alias: ['/origin/add'],
     name: 'OriginForm',
+    props: true,
     component: OriginForm,
     meta: { title: 'Origens - Cadastrar' },
   },

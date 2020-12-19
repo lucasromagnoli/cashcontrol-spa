@@ -26,3 +26,13 @@ export function insertMessage(message) {
   console.log('Emmitting event ', config.events.INSERT_MESSAGE);
   window.bus.$emit(config.events.INSERT_MESSAGE, message);
 }
+
+export function updateObjectInsideArray(array, target) {
+  const arrayClone = array;
+  const targetIndex = arrayClone.findIndex((object) => object.id === target.id);
+  if (targetIndex >= 0) {
+    arrayClone[targetIndex] = target;
+  }
+
+  return arrayClone;
+}

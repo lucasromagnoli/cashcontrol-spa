@@ -98,16 +98,22 @@ export default {
     },
     handleClickUpdate({ id, name }) {
       console.log(id, name);
+      const target = {
+        id,
+        name,
+      };
+      this.$router.push({ name: 'OriginForm', params: { mode: 'update', target } });
     },
   },
   async mounted() {
+    const dataTable = this.$store.getters['origin/getDataTable'];
     const diffInMinus = dateDifferenceInMinutes(new Date(), this.originVuex.lastUpdate);
     /* eslint-disable */
 
     if (
       Number.isNaN(diffInMinus) ||
       diffInMinus >= config.ORIGIN_DATATABLE_EXPIRE_MINUTES ||
-      !originVuex.dataTable
+      !dataTable
     ) {
       // TODO(18/12/2020): Corrigir bug do eslint+prettier referente a posição dos operadores lógicos
       /* eslint-enable */
