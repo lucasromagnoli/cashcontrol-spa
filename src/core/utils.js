@@ -23,17 +23,21 @@ export function getRandomInteger(min, max) {
 }
 
 export function clearMessages() {
-  console.log('Emmitting event ', config.events.CLEAR_MESSAGE);
-  window.bus.$emit(config.events.CLEAR_MESSAGE);
+  this.emitEvent(config.events.CLEAR_MESSAGE);
 }
 
 export function insertMessage(message) {
-  console.log('Emmitting event ', config.events.INSERT_MESSAGE);
   if (!message.dontClear) {
     // TODO(19/12/2020): Corrigir o efeito de transação que ficou "flicando"
     clearMessages();
   }
-  window.bus.$emit(config.events.INSERT_MESSAGE, message);
+  this.emitEvent(config.events.INSERT_MESSAGE);
+}
+
+export function emitEvent(event, payload) {
+  // TODO(20/12/2020): Atualizar o método de insert message para utilizar este do evento
+  console.log('Emitting event', event);
+  window.bus.$emit(event, payload);
 }
 
 export function updateObjectInsideArray(array, target) {

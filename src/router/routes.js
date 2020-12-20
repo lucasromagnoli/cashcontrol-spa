@@ -1,6 +1,7 @@
 import Home from '@/views/Home.vue';
 import PageNotFound from '@/views/PageNotFound.vue';
-import Category from '@/views/Category.vue';
+import CategoryForm from '@/views/category/CategoryForm.vue';
+import CategoryList from '@/views/category/CategoryList.vue';
 import Subcategory from '@/views/Subcategory.vue';
 import OriginList from '@/views/origin/OriginList.vue';
 import OriginForm from '@/views/origin/OriginForm.vue';
@@ -16,10 +17,19 @@ export default [
     meta: { title: 'Cash Control - SPA' },
   },
   {
-    path: '/category',
-    name: 'Category',
-    component: Category,
+    path: '/category/list',
+    alias: ['/category'],
+    name: 'CategoryList',
+    component: CategoryList,
     meta: { title: 'Categorias' },
+  },
+  {
+    path: '/category/form',
+    alias: ['/category/add'],
+    name: 'CategoryForm',
+    props: true,
+    component: CategoryForm,
+    meta: { title: 'Categoria - Cadastrar' },
   },
   {
     path: '/subcategory',

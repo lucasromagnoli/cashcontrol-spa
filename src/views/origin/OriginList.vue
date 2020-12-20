@@ -108,6 +108,7 @@ export default {
     },
   },
   async mounted() {
+    // TODO(20/12/2020): Levar para os actions do vuex?
     const dataTable = this.$store.getters['origin/getDataTable'];
     const diffInMinus = dateDifferenceInMinutes(new Date(), this.originVuex.lastUpdate);
     /* eslint-disable */

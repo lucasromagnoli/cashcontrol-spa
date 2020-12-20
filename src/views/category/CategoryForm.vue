@@ -1,10 +1,10 @@
 <template>
-  <h1>Categoria</h1>
+  <div>Category Form</div>
 </template>
 
 <script>
 export default {
-  name: 'Category',
+  name: 'CategoryForm',
 };
 </script>
 

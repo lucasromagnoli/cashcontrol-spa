@@ -67,7 +67,18 @@ export default {
         {
           icon: 'mdi-home',
           title: 'Categorias',
-          route: { name: 'Category' },
+          childrens: [
+            {
+              icon: 'mdi-inbox-arrow-down',
+              title: 'Cadastrar',
+              route: { name: 'CategoryForm' },
+            },
+            {
+              icon: 'mdi-inbox-arrow-down',
+              title: 'Listar',
+              route: { name: 'CategoryList' },
+            },
+          ],
         },
         {
           icon: 'mdi-home',

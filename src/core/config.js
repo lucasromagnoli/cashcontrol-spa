@@ -6,5 +6,6 @@ export default {
   events: {
     INSERT_MESSAGE: 'insert:message',
     CLEAR_MESSAGE: 'clear:message',
+    DETAILS_SUBCATEGORY: 'details:subcategory',
   },
 };
