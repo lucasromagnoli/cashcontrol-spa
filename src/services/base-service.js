@@ -4,7 +4,6 @@ import HttpClient from './http-client';
 import ResponseWrapper from './response-wrapper';
 
 export default class BaseService {
-  // TODO(08/12/2020): Implementar o serviço base
   constructor({ baseURL, suffix = '' }) {
     console.log(`Construindo base-service: baseURL: ${baseURL}`);
     this.httpClient = new HttpClient({ baseURL });
@@ -48,7 +47,13 @@ export default class BaseService {
     }
   }
 
-  async delete({ endpoint, query }) {
-    return this.httpClient.axiosIntance.delete(this.handleEndpoint(endpoint, query));
+  async delete({ endpoint }) {
+    try {
+      console.log('endpoint', endpoint);
+      const response = await this.httpClient.axiosIntance.delete(this.handleEndpoint(endpoint));
+      return new ResponseWrapper(response);
+    } catch (error) {
+      throw new ErrorWrapper(error);
+    }
   }
 }

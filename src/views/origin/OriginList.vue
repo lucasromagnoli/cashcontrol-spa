@@ -85,7 +85,9 @@ export default {
     },
     handleCallbackModal(choice) {
       if (choice) {
-        // TODO(14/12/2020): Realmente remover a Origem. Consumindo o back-end e tratando retorno.
+        OriginService.delete({
+          endpoint: `/${this.delete.selected.id}`,
+        });
         this.$store.commit('origin/DELETE_ORIGIN', this.delete.selected);
         insertMessage({
           type: 'success',
@@ -117,8 +119,6 @@ export default {
     ) {
       // TODO(18/12/2020): Corrigir bug do eslint+prettier referente a posição dos operadores lógicos
       /* eslint-enable */
-
-      // TODO(15/12/2020): Realmentar realizar a requisição ao back-end e atualizar
       this.dataTable.loading = true;
       const { apiContent: origins } = await OriginService.get({
         endpoint: '/',
