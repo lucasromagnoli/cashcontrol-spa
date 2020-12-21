@@ -12,3 +12,9 @@ extend('lengthBetween', {
   params: ['min', 'max'],
   message: '{_field_} precisa ter entre {min} e {max} caracteres.',
 });
+
+extend('lengthMax', {
+  validate: (value, { max }) => value.length <= max,
+  params: ['max'],
+  message: '{_field_} precisa ter no máximo {max} caracteres.',
+});

@@ -17,7 +17,14 @@ export default {
     });
     state.commit('BOOTSTRAP_SUBCATEGORY', subcategories);
   },
-
+  async insertCategory(state, category) {
+    const { apiContent: savedCategory } = await CategoryService.post({
+      endpoint: '/',
+      payload: category,
+    });
+    state.commit('INSERT_CATEGORY', savedCategory);
+    return savedCategory;
+  },
   // async loadSubcategoryDetails(state, { id }) {
   //   const category = await SubcategoryService.get({
   //     endpoint: `/details/${id}`,

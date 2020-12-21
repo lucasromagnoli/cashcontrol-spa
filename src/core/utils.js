@@ -22,8 +22,14 @@ export function getRandomInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+export function emitEvent(event, payload) {
+  // TODO(20/12/2020): Atualizar o método de insert message para utilizar este do evento
+  console.log('Emitting event', event);
+  window.bus.$emit(event, payload);
+}
+
 export function clearMessages() {
-  this.emitEvent(config.events.CLEAR_MESSAGE);
+  emitEvent(config.events.CLEAR_MESSAGE);
 }
 
 export function insertMessage(message) {
@@ -31,13 +37,7 @@ export function insertMessage(message) {
     // TODO(19/12/2020): Corrigir o efeito de transação que ficou "flicando"
     clearMessages();
   }
-  this.emitEvent(config.events.INSERT_MESSAGE);
-}
-
-export function emitEvent(event, payload) {
-  // TODO(20/12/2020): Atualizar o método de insert message para utilizar este do evento
-  console.log('Emitting event', event);
-  window.bus.$emit(event, payload);
+  emitEvent(config.events.INSERT_MESSAGE, message);
 }
 
 export function updateObjectInsideArray(array, target) {
