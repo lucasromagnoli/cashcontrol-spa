@@ -20,7 +20,7 @@
         <v-icon small class="mr-2" @click="handleClickUpdate(item)">
           mdi-pencil
         </v-icon>
-        <v-icon small @click="handleClickDelete(item)"> mdi-delete </v-icon>
+          <v-icon small @click="handleClickDelete(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
 

@@ -49,3 +49,25 @@ export function updateObjectInsideArray(array, target) {
 
   return arrayClone;
 }
+
+export function nvl(target1, target2) {
+  if (target1) {
+    return target1;
+  }
+
+  return target2;
+}
+
+// TODO(29/12/2020): Atualizar os métodos que foram implementados sem utilizar este método
+export function isErrorWrapper(error) {
+  return error.constructor.name === 'ErrorWrapper';
+}
+// TODO(29/12/2020): Atualizar os métodos que foram implementados sem utilizar este método
+export function getErrorMessage(error) {
+  if (isErrorWrapper(error)) {
+    return error.getDisplayMessage();
+  }
+
+  console.error(error.message);
+  return 'Aconteceu algo insperado, contate o administrador do sistema.';
+}

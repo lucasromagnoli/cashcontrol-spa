@@ -18,7 +18,7 @@
         </validation-provider>
         <validation-provider
           name="description"
-          rules="required|lengthMax:200"
+          rules="lengthMax:200"
           v-slot="{ errors }"
         >
           <v-text-field
@@ -115,7 +115,6 @@ export default {
     async handleClickInsert() {
       try {
         const category = await this.$store.dispatch('category/insertCategory', this.category);
-        console.log('category', category);
         insertMessage({
           type: 'success',
           text: `${category.name} cadastrada com sucesso!`,
@@ -123,6 +122,7 @@ export default {
         });
         this.clearForm();
       } catch (error) {
+        console.log('error', error.constructor.name);
         if (error.isValidationError()) {
           this.$refs.observer.setErrors(error.validation);
         }

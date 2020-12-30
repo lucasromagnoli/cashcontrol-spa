@@ -1,12 +1,12 @@
-import { updateObjectInsideArray } from '@/core/utils';
+import { updateObjectInsideArray, nvl } from '@/core/utils';
 
 export default {
   BOOTSTRAP_CATEGORY(state, categories) {
-    state.category.dataTable = categories;
+    state.category.dataTable = nvl(categories, []);
     state.category.lastUpdate = new Date();
   },
   BOOTSTRAP_SUBCATEGORY(state, subcategories) {
-    state.subcategory.dataTable = subcategories;
+    state.subcategory.dataTable = nvl(subcategories, []);
     state.subcategory.lastUpdate = new Date();
   },
   INSERT_CATEGORY(state, target) {
