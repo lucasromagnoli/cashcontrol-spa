@@ -10,6 +10,7 @@
 </template>
 
 <script>
+// TODO(29/12/2020): Inserir data da ultima atualização, levando em consideração quando for modal.
 import config from '@/core/config';
 
 export default {

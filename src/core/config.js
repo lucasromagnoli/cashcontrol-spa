@@ -3,6 +3,11 @@ export default {
   apiClassNames: {
     PAGE_CLASS: 'PageImpl',
   },
+  // TODO(30/12/2020): Atualizar para utilizar a constante abaixo
+  messages: {
+    ERROR: 'error',
+    SUCCESS: 'success',
+  },
   events: {
     INSERT_MESSAGE: 'insert:message',
     CLEAR_MESSAGE: 'clear:message',

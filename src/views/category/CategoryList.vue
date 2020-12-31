@@ -101,7 +101,7 @@ export default {
           this.$store.dispatch('category/deleteCategory', this.delete.selected);
           clearMessages();
           insertMessage({
-            type: 'success',
+            type: config.messages.SUCCESS,
             text: `${this.delete.selected.name} removido com sucesso!`,
             dismissible: true,
           });
@@ -111,7 +111,7 @@ export default {
             this.$refs.observer.setErrors(error.validation);
           }
           insertMessage({
-            type: 'error',
+            type: config.messages.ERROR,
             text: getErrorMessage(error),
             dismissible: true,
           });
@@ -120,6 +120,17 @@ export default {
     },
     clearDeleteSelected() {
       this.delete.selected = null;
+    },
+    handleClickUpdate({
+      id, name, description, type,
+    }) {
+      const target = {
+        id,
+        name,
+        description,
+        type,
+      };
+      this.$router.push({ name: 'CategoryForm', params: { mode: 'update', target } });
     },
   },
   computed: {

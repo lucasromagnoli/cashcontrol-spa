@@ -34,4 +34,14 @@ export default {
 
     state.commit('DELETE_CATEGORY', deletedCategory);
   },
+
+  async updateCategory(state, category) {
+    const { apiContent: updatedCategory } = await CategoryService.put({
+      endpoint: '/',
+      payload: category,
+    });
+
+    state.commit('UPDATE_CATEGORY', updatedCategory);
+    return updatedCategory;
+  },
 };

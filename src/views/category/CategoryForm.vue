@@ -49,7 +49,11 @@
 </template>
 
 <script>
-import { insertMessage, clearMessages } from '@/core/utils';
+import {
+  insertMessage, clearMessages, isErrorWrapper, getErrorMessage,
+} from '@/core/utils';
+import config from '@/core/config';
+
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 
 export default {
@@ -73,17 +77,17 @@ export default {
         id: null,
         name: '',
         description: '',
-        type: 'Expense',
+        type: 'EXPENSE',
       },
       form: {
         type: '',
         selectTypeItems: [
           {
-            type: 'Expense',
+            type: 'EXPENSE',
             text: 'Despesa',
           },
           {
-            type: 'Income',
+            type: 'INCOME',
             text: 'Receita',
           },
         ],
@@ -105,36 +109,29 @@ export default {
     async handleClickFormSubmit() {
       const isValid = await this.$refs.observer.validate();
       if (isValid) {
-        if (this.isUpdate) {
-          this.handleClickUpdate();
-        } else {
-          this.handleClickInsert();
-        }
+        this.handleClickInsertOrUpdate();
       }
     },
-    async handleClickInsert() {
+    async handleClickInsertOrUpdate() {
       try {
-        const category = await this.$store.dispatch('category/insertCategory', this.category);
+        const action = this.isUpdate ? 'updateCategory' : 'insertCategory';
+        const category = await this.$store.dispatch(`category/${action}`, this.category);
         insertMessage({
-          type: 'success',
-          text: `${category.name} cadastrada com sucesso!`,
+          type: config.messages.SUCCESS,
+          text: `${category.name} ${this.isUpdate ? 'atualizada' : 'cadastrada'} com sucesso!`,
           dismissible: true,
         });
         this.clearForm();
       } catch (error) {
-        console.log('error', error.constructor.name);
-        if (error.isValidationError()) {
+        if (isErrorWrapper(error) && error.isValidationError()) {
           this.$refs.observer.setErrors(error.validation);
         }
         insertMessage({
-          type: 'error',
-          text: error.getDisplayMessage(),
+          type: config.messages.ERROR,
+          text: getErrorMessage(error),
           dismissible: true,
         });
       }
-    },
-    async handleClickUpdate() {
-      console.log('update');
     },
     clearForm() {
       this.$refs.observer.reset();
@@ -143,7 +140,7 @@ export default {
         id: null,
         name: '',
         description: '',
-        type: 'Expense',
+        type: 'EXPENSE',
       };
     },
     handleClickClear() {
@@ -152,6 +149,7 @@ export default {
     },
   },
   mounted() {
+    console.log('target', this.target);
     if (this.mode === 'update' && this.target !== undefined) {
       this.category = this.target;
     }
