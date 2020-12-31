@@ -1,4 +1,5 @@
 import config from '@/core/config';
+import { equalsIgnoreCase } from '@/core/utils';
 
 export default class ResponseWrapper {
   constructor(axiosResponse) {
@@ -12,7 +13,7 @@ export default class ResponseWrapper {
     message, message_type: messageType, content_type: contentType, payload,
   }) {
     const { content } = payload;
-    const payloadIsPage = contentType === config.apiClassNames.PAGE_CLASS;
+    const payloadIsPage = equalsIgnoreCase(contentType, config.apiPayloadTypes.SPRING_PAGINATION);
 
     this.apiMessage = message;
     this.apiMessageType = messageType;

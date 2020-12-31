@@ -1,9 +1,10 @@
 export default {
   ORIGIN_DATATABLE_EXPIRE_MINUTES: 5,
-  apiClassNames: {
-    PAGE_CLASS: 'PageImpl',
+  CATEGORY_DATATABLE_EXPIRE_MINUTES: 5,
+  apiPayloadTypes: {
+    SPRING_PAGINATION: 'PageImpl',
+    VALIDATION_MESSAGE: 'ValidationMessage',
   },
-  // TODO(30/12/2020): Atualizar para utilizar a constante abaixo
   messages: {
     ERROR: 'error',
     SUCCESS: 'success',

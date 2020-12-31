@@ -56,9 +56,8 @@ export default {
     },
   },
   async mounted() {
-    await this.$store.dispatch('category/findSubcategories');
     if (!this.isDetails) {
-      this.$store.dispatch('category/findSubcategories');
+      await this.$store.dispatch('category/findSubcategories');
     } else {
       window.bus.$on(config.events.DETAILS_SUBCATEGORY, this.setDetails);
       console.log('listening', config.events.DETAILS_SUBCATEGORY);

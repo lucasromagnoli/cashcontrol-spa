@@ -1,13 +1,25 @@
 import CategoryService from '@/services/category-service';
 import SubcategoryService from '@/services/subcategory-service';
+import config from '@/core/config';
+import { dateDifferenceInMinutes, isEmptyArray } from '@/core/utils';
 
 export default {
-  async findCategories(state) {
-    const { apiContent: categories } = await CategoryService.get({
-      endpoint: '/',
-      query: { page: 0, size: 100 },
-    });
-    state.commit('BOOTSTRAP_CATEGORY', categories);
+  async findCategories(store, forceUpdate = true) {
+    const diffInMinus = dateDifferenceInMinutes(new Date(), store.state.category.lastUpdate);
+    const dataTableIsEmpty = isEmptyArray(store.state.category.dataTable);
+    const updateExpires = Number.isNaN(diffInMinus)
+                          || diffInMinus >= config.CATEGORY_DATATABLE_EXPIRE_MINUTES;
+    const isToUpdate = forceUpdate || dataTableIsEmpty || updateExpires;
+    console.log(`dataTableIsEmpty: ${dataTableIsEmpty} - updateExpires: ${updateExpires}`);
+    console.log('category/findCategories->isToUpdate:', isToUpdate);
+
+    if (isToUpdate) {
+      const { apiContent: categories } = await CategoryService.get({
+        endpoint: '/',
+        query: { page: 0, size: 100 },
+      });
+      store.commit('BOOTSTRAP_CATEGORY', categories);
+    }
   },
 
   async findSubcategories(state) {

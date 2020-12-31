@@ -40,6 +40,8 @@
           <v-icon small @click="handleClickDelete(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
+    <h3>Última atualização:</h3>
+    {{ lastUpdate }}
   </v-container>
 </template>
 
@@ -47,7 +49,7 @@
 import ModalDefault from '@/components/layout/ModalDefault.vue';
 import SubcategoryTable from '@/components/SubcategoryTable.vue';
 import {
-  emitEvent, insertMessage, clearMessages, isErrorWrapper, getErrorMessage,
+  emitEvent, insertMessage, clearMessages, isErrorWrapper, getErrorMessage, formatDate,
 } from '@/core/utils';
 import config from '@/core/config';
 
@@ -140,10 +142,21 @@ export default {
     categoryDataTable() {
       return this.$store.getters['category/getCategoryDataTable'];
     },
+    lastUpdate() {
+      const { lastUpdate } = this.$store.state.category.category;
+      return lastUpdate ? formatDate(lastUpdate) : null;
+    },
   },
-  mounted() {
-    // TODO(20/12/2020): Implementar lógica de só atualizar a cada 5 minutos.
-    this.$store.dispatch('category/findCategories');
+  async mounted() {
+    try {
+      await this.$store.dispatch('category/findCategories', false);
+    } catch (error) {
+      insertMessage({
+        type: config.messages.ERROR,
+        text: getErrorMessage(error),
+        dismissible: true,
+      });
+    }
     this.dataTable.loading = false;
   },
 };

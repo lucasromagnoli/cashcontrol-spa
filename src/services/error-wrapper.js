@@ -1,3 +1,6 @@
+import { equalsIgnoreCase } from '@/core/utils';
+import config from '@/core/config';
+
 function getErrorMessage({ type, status }) {
   if (type === 'request') {
     return 'Connection Refused';
@@ -30,12 +33,19 @@ function getErrorMessage({ type, status }) {
 
   return message;
 }
+
+// TODO(31/12/2020): Verificar a necessidade de levar para o config.js
+const ErrorTypes = {
+  response: 'response',
+  request: 'request',
+};
+
 export default class ErrorWrapper extends Error {
   constructor(axiosError) {
     super();
     if (axiosError.response) {
-      // Houve um retorno da rquisição contendo erro.
-      this.type = 'response';
+      // Houve um retorno da requisição contendo erro.
+      this.type = ErrorTypes.response;
       this.status = axiosError.response.status;
       this.headers = axiosError.response.headers;
       this.apiData = {
@@ -47,12 +57,11 @@ export default class ErrorWrapper extends Error {
       };
 
       if (this.isValidationError()) {
-        // TODO(18/12/2020): Criar metódo para verificar string independente do case
         this.handleValidation();
       }
     } else if (axiosError.request) {
       // A requisição nem chegou a ser realizada.
-      this.type = 'request';
+      this.type = ErrorTypes.request;
     }
 
     this.httpMessage = getErrorMessage(this.type, this.status);
@@ -68,8 +77,7 @@ export default class ErrorWrapper extends Error {
     return this.apiData?.message || this.httpMessage;
   }
 
-  // TODO(18/12/2020): Colocar o ValidationMessage no config
   isValidationError() {
-    return this.apiData?.contentType === 'ValidationMessage';
+    return equalsIgnoreCase(this.apiData?.contentType, config.apiPayloadTypes.VALIDATION_MESSAGE);
   }
 }

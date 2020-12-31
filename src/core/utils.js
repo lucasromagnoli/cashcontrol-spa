@@ -23,7 +23,6 @@ export function getRandomInteger(min, max) {
 }
 
 export function emitEvent(event, payload) {
-  // TODO(20/12/2020): Atualizar o método de insert message para utilizar este do evento
   console.log('Emitting event', event);
   window.bus.$emit(event, payload);
 }
@@ -70,4 +69,20 @@ export function getErrorMessage(error) {
 
   console.error(error.message);
   return 'Aconteceu algo insperado, contate o administrador do sistema.';
+}
+
+export function isEmptyArray(array) {
+  return !Array.isArray(array) || array.length === 0;
+}
+
+export function isString(string) {
+  return typeof string === 'string';
+}
+
+export function equalsIgnoreCase(string1, string2) {
+  if (!isString(string1) || !isString(string2)) {
+    return false;
+  }
+
+  return string1.toUpperCase() === string2.toUpperCase();
 }

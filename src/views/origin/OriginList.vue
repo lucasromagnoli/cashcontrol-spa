@@ -90,7 +90,7 @@ export default {
         });
         this.$store.commit('origin/DELETE_ORIGIN', this.delete.selected);
         insertMessage({
-          type: 'success',
+          type: config.messages.SUCCESS,
           text: `${this.delete.selected.name} removido com sucesso!`,
           dismissible: true,
         });

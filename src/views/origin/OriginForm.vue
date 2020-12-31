@@ -31,6 +31,7 @@
 import OriginService from '@/services/origin-service';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import { insertMessage, clearMessages } from '@/core/utils';
+import config from '@/core/config';
 
 export default {
   name: 'OriginForm',
@@ -48,6 +49,8 @@ export default {
     },
   },
   methods: {
+    // TODO(31/12/2020): refatorar os métodos "crud"
+    // para dentro das actions conforme a implementação das categorias
     async handleClickFormSubmit() {
       const isValid = await this.$refs.observer.validate();
       if (isValid) {
@@ -66,7 +69,7 @@ export default {
         });
         this.$store.commit('origin/INSERT_ORIGIN', origin);
         insertMessage({
-          type: 'success',
+          type: config.messages.SUCCESS,
           text: `${origin.name} cadastrada com sucesso!`,
           dismissible: true,
         });
@@ -76,7 +79,7 @@ export default {
           this.$refs.observer.setErrors(error.validation);
         }
         insertMessage({
-          type: 'error',
+          type: config.messages.ERROR,
           text: error.getDisplayMessage(),
           dismissible: true,
         });
@@ -90,16 +93,15 @@ export default {
         });
         this.$store.commit('origin/UPDATE_ORIGIN', origin);
         insertMessage({
-          type: 'success',
+          type: config.messages.SUCCESS,
           text: `${origin.name} atualizada com sucesso!`,
           dismissible: true,
         });
         this.clearForm();
       } catch (error) {
-        // TODO(19/12/2020): Pensar maneira de não ter código duplicato com o método de insert
         this.$refs.observer.setErrors(error.validation);
         insertMessage({
-          type: 'error',
+          type: config.messages.ERROR,
           text: error.getDisplayMessage(),
           dismissible: true,
         });

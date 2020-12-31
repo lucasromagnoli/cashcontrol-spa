@@ -80,7 +80,7 @@ export default {
         type: 'EXPENSE',
       },
       form: {
-        type: '',
+        type: 'insert',
         selectTypeItems: [
           {
             type: 'EXPENSE',
@@ -149,7 +149,6 @@ export default {
     },
   },
   mounted() {
-    console.log('target', this.target);
     if (this.mode === 'update' && this.target !== undefined) {
       this.category = this.target;
     }
