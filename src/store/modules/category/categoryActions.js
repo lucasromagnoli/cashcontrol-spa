@@ -5,6 +5,8 @@ import { dateDifferenceInMinutes, isEmptyArray } from '@/core/utils';
 
 export default {
   async findCategories(store, forceUpdate = true) {
+    // TODO(03/01/2021): Implementar método que abstrai a lógica abaixo e retorna apenas true/false
+    // Pois o mesmo vai estar duplicado em todos os actions que forem realizar "cache"
     const diffInMinus = dateDifferenceInMinutes(new Date(), store.state.category.lastUpdate);
     const dataTableIsEmpty = isEmptyArray(store.state.category.dataTable);
     const updateExpires = Number.isNaN(diffInMinus)
