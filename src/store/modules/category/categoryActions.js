@@ -23,6 +23,7 @@ export default {
   },
 
   async findSubcategories(state) {
+    // TODO(03/01/2021): Implementar cache?
     const { apiContent: subcategories } = await SubcategoryService.get({
       endpoint: '/',
       query: { page: 0, size: 100 },

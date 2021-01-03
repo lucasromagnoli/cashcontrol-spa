@@ -28,9 +28,10 @@
 </template>
 
 <script>
-import OriginService from '@/services/origin-service';
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
-import { insertMessage, clearMessages } from '@/core/utils';
+import {
+  insertMessage, clearMessages, isErrorWrapper, getErrorMessage,
+} from '@/core/utils';
 import config from '@/core/config';
 
 export default {
@@ -49,60 +50,29 @@ export default {
     },
   },
   methods: {
-    // TODO(31/12/2020): refatorar os métodos "crud"
-    // para dentro das actions conforme a implementação das categorias
     async handleClickFormSubmit() {
       const isValid = await this.$refs.observer.validate();
       if (isValid) {
-        if (this.isUpdate) {
-          this.handleClickUpdate();
-        } else {
-          this.handleClickInsert();
-        }
+        this.handleClickInsertOrUpdate();
       }
     },
-    async handleClickInsert() {
+    async handleClickInsertOrUpdate() {
       try {
-        const { apiContent: origin } = await OriginService.post({
-          endpoint: '/',
-          payload: this.origin,
-        });
-        this.$store.commit('origin/INSERT_ORIGIN', origin);
+        const action = this.isUpdate ? 'updateOrigin' : 'insertOrigin';
+        const origin = await this.$store.dispatch(`origin/${action}`, this.origin);
         insertMessage({
           type: config.messages.SUCCESS,
-          text: `${origin.name} cadastrada com sucesso!`,
+          text: `${origin.name} ${this.isUpdate ? 'atualizada' : 'cadastrada'} com sucesso!`,
           dismissible: true,
         });
         this.clearForm();
       } catch (error) {
-        if (error.isValidationError()) {
+        if (isErrorWrapper(error) && error.isValidationError()) {
           this.$refs.observer.setErrors(error.validation);
         }
         insertMessage({
           type: config.messages.ERROR,
-          text: error.getDisplayMessage(),
-          dismissible: true,
-        });
-      }
-    },
-    async handleClickUpdate() {
-      try {
-        const { apiContent: origin } = await OriginService.put({
-          endpoint: '/',
-          payload: this.origin,
-        });
-        this.$store.commit('origin/UPDATE_ORIGIN', origin);
-        insertMessage({
-          type: config.messages.SUCCESS,
-          text: `${origin.name} atualizada com sucesso!`,
-          dismissible: true,
-        });
-        this.clearForm();
-      } catch (error) {
-        this.$refs.observer.setErrors(error.validation);
-        insertMessage({
-          type: config.messages.ERROR,
-          text: error.getDisplayMessage(),
+          text: getErrorMessage(error),
           dismissible: true,
         });
       }

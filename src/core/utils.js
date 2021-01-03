@@ -57,11 +57,10 @@ export function nvl(target1, target2) {
   return target2;
 }
 
-// TODO(29/12/2020): Atualizar os métodos que foram implementados sem utilizar este método
 export function isErrorWrapper(error) {
   return error.constructor.name === 'ErrorWrapper';
 }
-// TODO(29/12/2020): Atualizar os métodos que foram implementados sem utilizar este método
+
 export function getErrorMessage(error) {
   if (isErrorWrapper(error)) {
     return error.getDisplayMessage();

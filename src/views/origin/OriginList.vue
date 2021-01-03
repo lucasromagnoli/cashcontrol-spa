@@ -3,9 +3,9 @@
     <h2>Origem Listar</h2>
     <slot name="messages"></slot>
     <modal-default
-      :title="this.title"
+      title="Confirmar Exclusão"
       :body="this.body"
-      :callback="this.handleCallbackModal"
+      :callback="this.handleCallbackModalDelete"
       ref="modal"
     >
     </modal-default>
@@ -31,10 +31,11 @@
 
 <script>
 import ModalDefault from '@/components/layout/ModalDefault.vue';
-import { dateDifferenceInMinutes, formatDate, insertMessage } from '@/core/utils';
+import {
+  formatDate, clearMessages, insertMessage, isErrorWrapper, getErrorMessage,
+} from '@/core/utils';
 import config from '@/core/config';
 import { mapGetters } from 'vuex';
-import OriginService from '@/services/origin-service';
 
 export default {
   components: { ModalDefault },
@@ -67,9 +68,6 @@ export default {
     ...mapGetters({
       originVuex: 'origin/getDataTable',
     }),
-    title() {
-      return 'Confirmar Exclusão';
-    },
     body() {
       return `Você tem certeza que deseja remover a Origem <strong>${this.delete.selected?.name}</strong> ?`;
     },
@@ -79,27 +77,37 @@ export default {
     },
   },
   methods: {
+    clearDeleteSelected() {
+      this.delete.selected = null;
+    },
     handleClickDelete({ id, name }) {
       this.delete.selected = { id, name };
       this.$refs.modal.show = true;
     },
-    handleCallbackModal(choice) {
+    handleCallbackModalDelete(choice) {
       if (choice) {
-        OriginService.delete({
-          endpoint: `/${this.delete.selected.id}`,
-        });
-        this.$store.commit('origin/DELETE_ORIGIN', this.delete.selected);
-        insertMessage({
-          type: config.messages.SUCCESS,
-          text: `${this.delete.selected.name} removido com sucesso!`,
-          dismissible: true,
-        });
+        try {
+          this.$store.dispatch('origin/deleteOrigin', this.delete.selected);
+          clearMessages();
+          insertMessage({
+            type: config.messages.SUCCESS,
+            text: `${this.delete.selected.name} removido com sucesso!`,
+            dismissible: true,
+          });
+          this.clearDeleteSelected();
+        } catch (error) {
+          if (isErrorWrapper(error) && error.isValidationError()) {
+            this.$refs.observer.setErrors(error.validation);
+          }
+          insertMessage({
+            type: config.messages.ERROR,
+            text: getErrorMessage(error),
+            dismissible: true,
+          });
+        }
       }
-
-      this.selected = null;
     },
     handleClickUpdate({ id, name }) {
-      console.log(id, name);
       const target = {
         id,
         name,
@@ -108,25 +116,14 @@ export default {
     },
   },
   async mounted() {
-    // TODO(20/12/2020): Levar para os actions do vuex?
-    const dataTable = this.$store.getters['origin/getDataTable'];
-    const diffInMinus = dateDifferenceInMinutes(new Date(), this.originVuex.lastUpdate);
-    /* eslint-disable */
-
-    if (
-      Number.isNaN(diffInMinus) ||
-      diffInMinus >= config.ORIGIN_DATATABLE_EXPIRE_MINUTES ||
-      !dataTable
-    ) {
-      // TODO(18/12/2020): Corrigir bug do eslint+prettier referente a posição dos operadores lógicos
-      /* eslint-enable */
-      this.dataTable.loading = true;
-      const { apiContent: origins } = await OriginService.get({
-        endpoint: '/',
-        query: { page: 0, size: 100 },
+    try {
+      await this.$store.dispatch('origin/findOrigins', false);
+    } catch (error) {
+      insertMessage({
+        type: config.messages.ERROR,
+        text: getErrorMessage(error),
+        dismissible: true,
       });
-      this.$store.commit('origin/BOOTSTRAP_ORIGIN', origins);
-      console.log('Atualizando lista de origens');
     }
 
     this.dataTable.loading = false;

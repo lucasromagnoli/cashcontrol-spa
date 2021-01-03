@@ -1,8 +1,8 @@
-import { updateObjectInsideArray } from '@/core/utils';
+import { updateObjectInsideArray, nvl } from '@/core/utils';
 
 export default {
   BOOTSTRAP_ORIGIN(state, origins) {
-    state.dataTable = origins;
+    state.dataTable = nvl(origins, []);
     state.lastUpdate = new Date();
   },
   INSERT_ORIGIN(state, target) {

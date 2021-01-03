@@ -3,6 +3,9 @@ import ErrorWrapper from './error-wrapper';
 import HttpClient from './http-client';
 import ResponseWrapper from './response-wrapper';
 
+function debugRequest({ type, uri, payload }) {
+  console.log(`making a ${type} in ${uri} payload: ${payload === undefined ? 'without payload' : JSON.stringify(payload)}`);
+}
 export default class BaseService {
   constructor({ baseURL, suffix = '' }) {
     console.log(`Construindo base-service: baseURL: ${baseURL}`);
@@ -11,12 +14,22 @@ export default class BaseService {
   }
 
   handleEndpoint(endpoint = '', query = '') {
-    return `${this.suffix}${endpoint}?${qs.stringify(query)}`;
+    let parsedQuery = '';
+    if (query !== '') {
+      parsedQuery = `?${qs.stringify(query)}`;
+    }
+
+    return `${this.suffix}${endpoint}${parsedQuery}`;
   }
 
   async get({ endpoint, query }) {
+    const uri = this.handleEndpoint(endpoint, query);
+    debugRequest({
+      type: 'get',
+      uri,
+    });
     try {
-      const response = await this.httpClient.axiosIntance.get(this.handleEndpoint(endpoint, query));
+      const response = await this.httpClient.axiosIntance.get(uri);
       return new ResponseWrapper(response);
     } catch (error) {
       throw new ErrorWrapper(error);
@@ -24,9 +37,15 @@ export default class BaseService {
   }
 
   async post({ endpoint, query, payload }) {
+    const uri = this.handleEndpoint(endpoint, query);
+    debugRequest({
+      type: 'post',
+      uri,
+      payload,
+    });
     try {
       const response = await this.httpClient.axiosIntance.post(
-        this.handleEndpoint(endpoint, query),
+        uri,
         payload,
       );
       return new ResponseWrapper(response);
@@ -36,9 +55,15 @@ export default class BaseService {
   }
 
   async put({ endpoint, query, payload }) {
+    const uri = this.handleEndpoint(endpoint, query);
+    debugRequest({
+      type: 'put',
+      uri,
+      payload,
+    });
     try {
       const response = await this.httpClient.axiosIntance.put(
-        this.handleEndpoint(endpoint, query),
+        uri,
         payload,
       );
       return new ResponseWrapper(response);
@@ -48,9 +73,13 @@ export default class BaseService {
   }
 
   async delete({ endpoint }) {
+    const uri = this.handleEndpoint(endpoint);
+    debugRequest({
+      type: 'delete',
+      uri,
+    });
     try {
-      console.log('endpoint', endpoint);
-      const response = await this.httpClient.axiosIntance.delete(this.handleEndpoint(endpoint));
+      const response = await this.httpClient.axiosIntance.delete(uri);
       return new ResponseWrapper(response);
     } catch (error) {
       throw new ErrorWrapper(error);
