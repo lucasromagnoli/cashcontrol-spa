@@ -2,12 +2,13 @@ import Home from '@/views/Home.vue';
 import PageNotFound from '@/views/PageNotFound.vue';
 import CategoryForm from '@/views/category/CategoryForm.vue';
 import CategoryList from '@/views/category/CategoryList.vue';
-import Subcategory from '@/views/Subcategory.vue';
 import OriginList from '@/views/origin/OriginList.vue';
 import OriginForm from '@/views/origin/OriginForm.vue';
 import Income from '@/views/Income.vue';
 import Expense from '@/views/Expense.vue';
 import Transaction from '@/views/Transaction.vue';
+import SubcategoryList from '../views/subcategory/SubcategoryList.vue';
+import SubcategoryForm from '../views/subcategory/SubcategoryForm.vue';
 
 export default [
   {
@@ -32,10 +33,19 @@ export default [
     meta: { title: 'Categoria - Cadastrar' },
   },
   {
-    path: '/subcategory',
-    name: 'Subcategory',
-    component: Subcategory,
+    path: '/subcategory/list',
+    alias: ['/subcategory'],
+    name: 'SubcategoryList',
+    component: SubcategoryList,
     meta: { title: 'Subcategorias' },
+  },
+  {
+    path: '/subcategory/form',
+    alias: ['/subcategory/add'],
+    name: 'SubcategoryForm',
+    props: true,
+    component: SubcategoryForm,
+    meta: { title: 'Subcategoria - Cadastrar' },
   },
   {
     path: '/origin/list',

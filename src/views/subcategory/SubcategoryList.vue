@@ -1,12 +1,13 @@
 <template>
-  <h1>Subcategory</h1>
+  <h1>List</h1>
 </template>
 
 <script>
 export default {
-  name: 'Subcategory',
+  name: 'SubcategoryList',
 };
 </script>
 
 <style>
+
 </style>

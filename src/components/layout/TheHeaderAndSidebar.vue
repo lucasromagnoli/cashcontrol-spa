@@ -82,8 +82,19 @@ export default {
         },
         {
           icon: 'mdi-home',
-          title: 'Subcategorias',
-          route: { name: 'Subcategory' },
+          title: 'Subcategoria',
+          childrens: [
+            {
+              icon: 'mdi-inbox-arrow-down',
+              title: 'Cadastrar',
+              route: { name: 'SubcategoryForm' },
+            },
+            {
+              icon: 'mdi-inbox-arrow-down',
+              title: 'Listar',
+              route: { name: 'SubcategoryList' },
+            },
+          ],
         },
         {
           icon: 'mdi-home',
