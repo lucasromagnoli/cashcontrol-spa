@@ -85,3 +85,12 @@ export function equalsIgnoreCase(string1, string2) {
 
   return string1.toUpperCase() === string2.toUpperCase();
 }
+
+export function storeIsToUpdate(forceUpdate, lastUpdate, expireMinutes, dataTable = []) {
+  const diffInMinus = dateDifferenceInMinutes(new Date(), lastUpdate);
+  const dataTableIsEmpty = isEmptyArray(dataTable);
+  const updateExpires = Number.isNaN(diffInMinus) || diffInMinus >= expireMinutes;
+
+  console.log(`dataTableIsEmpty: ${dataTableIsEmpty} - updateExpires: ${updateExpires}`);
+  return forceUpdate || dataTableIsEmpty || updateExpires;
+}

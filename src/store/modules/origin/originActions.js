@@ -1,17 +1,14 @@
 import OriginService from '@/services/origin-service';
 import config from '@/core/config';
-import { dateDifferenceInMinutes, isEmptyArray } from '@/core/utils';
+import { storeIsToUpdate } from '@/core/utils';
 
 export default {
   async findOrigins(store, forceUpdate = true) {
-    const diffInMinus = dateDifferenceInMinutes(new Date(), store.state.lastUpdate);
-    const dataTableIsEmpty = isEmptyArray(store.state.dataTable);
-    const updateExpires = Number.isNaN(diffInMinus)
-                          || diffInMinus >= config.ORIGIN_DATATABLE_EXPIRE_MINUTES;
-    const isToUpdate = forceUpdate || dataTableIsEmpty || updateExpires;
-    console.log(`dataTableIsEmpty: ${dataTableIsEmpty} - updateExpires: ${updateExpires}`);
-    console.log('origin/findFindOrigins->isToUpdate:', isToUpdate);
+    const isToUpdate = storeIsToUpdate(forceUpdate,
+      store.state.lastUpdate, config.ORIGIN_DATATABLE_EXPIRE_MINUTES,
+      store.state.dataTable);
 
+    console.log('origin/findFindOrigins->isToUpdate:', isToUpdate);
     if (isToUpdate) {
       const { apiContent: origins } = await OriginService.get({
         endpoint: '/',

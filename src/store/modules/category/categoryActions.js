@@ -1,20 +1,15 @@
 import CategoryService from '@/services/category-service';
 import SubcategoryService from '@/services/subcategory-service';
 import config from '@/core/config';
-import { dateDifferenceInMinutes, isEmptyArray } from '@/core/utils';
+import { storeIsToUpdate } from '@/core/utils';
 
 export default {
   async findCategories(store, forceUpdate = true) {
-    // TODO(03/01/2021): Implementar método que abstrai a lógica abaixo e retorna apenas true/false
-    // Pois o mesmo vai estar duplicado em todos os actions que forem realizar "cache"
-    const diffInMinus = dateDifferenceInMinutes(new Date(), store.state.category.lastUpdate);
-    const dataTableIsEmpty = isEmptyArray(store.state.category.dataTable);
-    const updateExpires = Number.isNaN(diffInMinus)
-                          || diffInMinus >= config.CATEGORY_DATATABLE_EXPIRE_MINUTES;
-    const isToUpdate = forceUpdate || dataTableIsEmpty || updateExpires;
-    console.log(`dataTableIsEmpty: ${dataTableIsEmpty} - updateExpires: ${updateExpires}`);
-    console.log('category/findCategories->isToUpdate:', isToUpdate);
+    const isToUpdate = storeIsToUpdate(forceUpdate,
+      store.state.category.lastUpdate, config.CATEGORY_DATATABLE_EXPIRE_MINUTES,
+      store.state.category.dataTable);
 
+    console.log('category/findCategories->isToUpdate:', isToUpdate);
     if (isToUpdate) {
       const { apiContent: categories } = await CategoryService.get({
         endpoint: '/',
