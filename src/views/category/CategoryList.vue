@@ -140,10 +140,10 @@ export default {
       return `Você tem certeza que deseja remover a Categoria <strong>${this.delete.selected?.name}</strong> ?`;
     },
     categoryDataTable() {
-      return this.$store.getters['category/getCategoryDataTable'];
+      return this.$store.getters['category/getDataTable'];
     },
     lastUpdate() {
-      const { lastUpdate } = this.$store.state.category.category;
+      const { lastUpdate } = this.$store.state.category;
       return lastUpdate ? formatDate(lastUpdate) : null;
     },
   },

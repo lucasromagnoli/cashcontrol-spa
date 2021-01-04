@@ -1,19 +1,19 @@
 import { updateObjectInsideArray, nvl } from '@/core/utils';
 
 export default {
-  BOOTSTRAP_CATEGORY(state, categories) {
-    state.dataTable = nvl(categories, []);
+  BOOTSTRAP_SUBCATEGORY(state, subcategories) {
+    state.dataTable = nvl(subcategories, []);
     state.lastUpdate = new Date();
   },
-  INSERT_CATEGORY(state, target) {
+  INSERT_SUBCATEGORY(state, target) {
     state.dataTable.push(target);
   },
-  UPDATE_CATEGORY(state, target) {
+  UPDATE_SUBCATEGORY(state, target) {
     state.dataTable = updateObjectInsideArray(state.dataTable, target);
   },
-  DELETE_CATEGORY(state, target) {
+  DELETE_SUBCATEGORY(state, target) {
     state.dataTable = state.dataTable.filter(
-      (category) => category.id !== target.id,
+      (subcategory) => subcategory.id !== target.id,
     );
   },
 };

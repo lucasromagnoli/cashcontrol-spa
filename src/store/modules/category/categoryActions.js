@@ -1,13 +1,12 @@
 import CategoryService from '@/services/category-service';
-import SubcategoryService from '@/services/subcategory-service';
 import config from '@/core/config';
 import { storeIsToUpdate } from '@/core/utils';
 
 export default {
   async findCategories(store, forceUpdate = true) {
     const isToUpdate = storeIsToUpdate(forceUpdate,
-      store.state.category.lastUpdate, config.CATEGORY_DATATABLE_EXPIRE_MINUTES,
-      store.state.category.dataTable);
+      store.state.lastUpdate, config.CATEGORY_DATATABLE_EXPIRE_MINUTES,
+      store.state.dataTable);
 
     console.log('category/findCategories->isToUpdate:', isToUpdate);
     if (isToUpdate) {
@@ -17,15 +16,6 @@ export default {
       });
       store.commit('BOOTSTRAP_CATEGORY', categories);
     }
-  },
-
-  async findSubcategories(state) {
-    // TODO(03/01/2021): Implementar cache?
-    const { apiContent: subcategories } = await SubcategoryService.get({
-      endpoint: '/',
-      query: { page: 0, size: 100 },
-    });
-    state.commit('BOOTSTRAP_SUBCATEGORY', subcategories);
   },
 
   async insertCategory(state, category) {

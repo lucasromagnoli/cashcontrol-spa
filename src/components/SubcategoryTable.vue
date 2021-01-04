@@ -49,16 +49,15 @@ export default {
   },
   computed: {
     subcategoryDataTable() {
-      return this.$store.getters['category/getSubcategoryDataTable'];
+      return this.$store.getters['subcategory/getDataTable'];
     },
     isDetails() {
       return this.details;
     },
   },
   async mounted() {
-    if (!this.isDetails) {
-      await this.$store.dispatch('category/findSubcategories');
-    } else {
+    await this.$store.dispatch('subcategory/findSubcategories');
+    if (this.isDetails) {
       window.bus.$on(config.events.DETAILS_SUBCATEGORY, this.setDetails);
       console.log('listening', config.events.DETAILS_SUBCATEGORY);
     }
