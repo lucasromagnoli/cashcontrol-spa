@@ -4,9 +4,9 @@ import CategoryForm from '@/views/category/CategoryForm.vue';
 import CategoryList from '@/views/category/CategoryList.vue';
 import OriginList from '@/views/origin/OriginList.vue';
 import OriginForm from '@/views/origin/OriginForm.vue';
-import Income from '@/views/Income.vue';
-import Expense from '@/views/Expense.vue';
-import Transaction from '@/views/Transaction.vue';
+import Income from '@/views/transaction/Income.vue';
+import Expense from '@/views/transaction/Expense.vue';
+import Transaction from '@/views/transaction/Transaction.vue';
 import SubcategoryList from '../views/subcategory/SubcategoryList.vue';
 import SubcategoryForm from '../views/subcategory/SubcategoryForm.vue';
 

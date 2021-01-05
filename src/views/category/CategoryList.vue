@@ -49,7 +49,7 @@
 import ModalDefault from '@/components/layout/ModalDefault.vue';
 import SubcategoryTable from '@/components/SubcategoryTable.vue';
 import {
-  emitEvent, insertMessage, clearMessages, isErrorWrapper, getErrorMessage, formatDate,
+  emitEvent, insertMessage, clearMessages, getErrorMessage, formatDate,
 } from '@/core/utils';
 import config from '@/core/config';
 
@@ -100,7 +100,7 @@ export default {
     async handleCallbackModalDelete(choice) {
       if (choice) {
         try {
-          this.$store.dispatch('category/deleteCategory', this.delete.selected);
+          await this.$store.dispatch('category/deleteCategory', this.delete.selected);
           clearMessages();
           insertMessage({
             type: config.messages.SUCCESS,
@@ -109,9 +109,6 @@ export default {
           });
           this.clearDeleteSelected();
         } catch (error) {
-          if (isErrorWrapper(error) && error.isValidationError()) {
-            this.$refs.observer.setErrors(error.validation);
-          }
           insertMessage({
             type: config.messages.ERROR,
             text: getErrorMessage(error),

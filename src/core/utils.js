@@ -57,16 +57,22 @@ export function nvl(target1, target2) {
   return target2;
 }
 
+export function isFalse(target) {
+  return target === undefined || target === null || target === [] || target === false || target === '';
+}
+
 export function isErrorWrapper(error) {
   return error.constructor.name === 'ErrorWrapper';
 }
-
-export function getErrorMessage(error) {
+export function getErrorMessage(error, showDetails = true) {
   if (isErrorWrapper(error)) {
+    if (showDetails && !isFalse(error.validation)) {
+      return error.validation;
+    }
+
     return error.getDisplayMessage();
   }
 
-  console.error(error.message);
   return 'Aconteceu algo insperado, contate o administrador do sistema.';
 }
 

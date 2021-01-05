@@ -8,7 +8,7 @@
         :dismissible="message.dismissible"
         ref="messageDisplay"
       >
-        {{ message.text }}
+        {{ parseMessage(message.text) }}
       </v-alert>
     </transition-group>
   </div>
@@ -25,11 +25,29 @@ export default {
     };
   },
   methods: {
+    parseMessage(text) {
+      if (typeof text === 'object') {
+        let messages = '';
+        Object.entries(text).forEach((array, arrayLoop) => {
+          array.forEach((item, itemLoop) => {
+            messages += item;
+            if (item.length - 1 !== itemLoop) {
+              messages += ': ';
+            }
+          });
+
+          if (Object.entries(text).length - 1 !== arrayLoop) {
+            messages += ';';
+          }
+        });
+        return messages;
+      }
+      return text;
+    },
     /* eslint-disable */
     insertMessage({ type, text, dismissible, time }) {
       // TODO(18/12/2020): Corrigir erro do eslint/prettier referente ao {
       /* eslint-enable */
-
       const message = {
         key: new Date().getTime(),
         type,
