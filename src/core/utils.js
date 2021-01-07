@@ -12,7 +12,11 @@ export function dateDifferenceInMinutes(dateA, dateB) {
   return differenceInMinutes(dateA, dateB);
 }
 
-export function formatDate(target) {
+export function formatDate(target, { onlyDate }) {
+  if (onlyDate) {
+    return format(target, 'MM/dd/yyyy');
+  }
+
   const distance = formatDistance(target, new Date(), { locale: ptBR });
   const date = format(target, "MM/dd/yyyy' ás 'HH:mm:ss");
   return `${date} (${distance} atrás)`;
@@ -99,4 +103,8 @@ export function storeIsToUpdate(forceUpdate, lastUpdate, expireMinutes, dataTabl
 
   console.log(`dataTableIsEmpty: ${dataTableIsEmpty} - updateExpires: ${updateExpires}`);
   return forceUpdate || dataTableIsEmpty || updateExpires;
+}
+
+export function formatCurrency(target) {
+  return target.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
 }

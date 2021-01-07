@@ -1,5 +1,5 @@
 export default {
   getDataTable(state) {
-    return state;
+    return state.dataTable;
   },
 };
