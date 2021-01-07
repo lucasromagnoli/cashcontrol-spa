@@ -2,25 +2,24 @@
   <div>
     <slot name="messages"></slot>
 
-      <modal-default
-        title="Confirmar Exclusão"
-        :body="modalDeleteBody"
-        :callback="this.handleCallbackModalDelete"
-        ref="modal"
-      />
-      <v-data-table
+    <modal-default
+      title="Confirmar Exclusão"
+      :body="modalDeleteBody"
+      :callback="this.handleCallbackModalDelete"
+      ref="modal"
+    />
+    <v-data-table
       :headers="dataTable.headers"
       :items="isDetails ? dataTable.details : subcategoryDataTable"
       :items-per-page="5"
       :loading="dataTable.loading"
       class="elevation-1"
     >
-
       <template v-slot:item.actions="{ item }">
         <v-icon small class="mr-2" @click="handleClickUpdate(item)">
           mdi-pencil
         </v-icon>
-          <v-icon small @click="handleClickDelete(item)"> mdi-delete </v-icon>
+        <v-icon small @click="handleClickDelete(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
 
@@ -34,7 +33,11 @@
 <script>
 import config from '@/core/config';
 import {
-  insertMessage, getErrorMessage, formatDate, clearMessages, isErrorWrapper,
+  insertMessage,
+  getErrorMessage,
+  formatDate,
+  clearMessages,
+  isErrorWrapper,
 } from '@/core/utils';
 import ModalDefault from '@/components/layout/ModalDefault.vue';
 
@@ -69,7 +72,10 @@ export default {
           { text: 'Nome', value: 'name' },
           { text: 'Descrição', value: 'description' },
           {
-            text: 'Ações', value: 'actions', sortable: false, align: 'center',
+            text: 'Ações',
+            value: 'actions',
+            sortable: false,
+            align: 'center',
           },
         ],
       },
@@ -111,9 +117,8 @@ export default {
     clearDeleteSelected() {
       this.delete.selected = null;
     },
-    handleClickUpdate({
-      id, name, description, category,
-    }) {
+    /*eslint-disable*/
+    handleClickUpdate({ id, name, description, category }) {
       const target = {
         id,
         name,
@@ -133,7 +138,7 @@ export default {
     },
     lastUpdate() {
       const { lastUpdate } = this.$store.state.subcategory;
-      return lastUpdate ? formatDate(lastUpdate) : null;
+      return lastUpdate ? formatDate(lastUpdate, {}) : null;
     },
     modalDeleteBody() {
       return `Você tem certeza que deseja remover a Subcategoria <strong>${this.delete.selected?.name}</strong> ?`;

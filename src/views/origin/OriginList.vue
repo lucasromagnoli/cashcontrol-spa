@@ -20,7 +20,7 @@
         <v-icon small class="mr-2" @click="handleClickUpdate(item)">
           mdi-pencil
         </v-icon>
-          <v-icon small @click="handleClickDelete(item)"> mdi-delete </v-icon>
+        <v-icon small @click="handleClickDelete(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
 
@@ -32,7 +32,11 @@
 <script>
 import ModalDefault from '@/components/layout/ModalDefault.vue';
 import {
-  formatDate, clearMessages, insertMessage, isErrorWrapper, getErrorMessage,
+  formatDate,
+  clearMessages,
+  insertMessage,
+  isErrorWrapper,
+  getErrorMessage,
 } from '@/core/utils';
 import config from '@/core/config';
 import { mapGetters } from 'vuex';
@@ -73,7 +77,7 @@ export default {
     },
     lastUpdate() {
       const { lastUpdate } = this.originVuex;
-      return lastUpdate ? formatDate(lastUpdate) : null;
+      return lastUpdate ? formatDate(lastUpdate, {}) : null;
     },
   },
   methods: {

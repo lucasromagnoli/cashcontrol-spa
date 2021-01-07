@@ -1,29 +1,29 @@
 <template>
-<v-container>
-  <slot name="messages"></slot>
-  <h1>Movimentações</h1>
-  <v-data-table
-    :headers="dataTable.headers"
-    :items="transactionDataTable"
-    :items-per-page="20"
-    :loading="dataTable.loading"
-    dense
-    class="elevation-1"
-  >
+  <v-container>
+    <slot name="messages"></slot>
+    <h1>Movimentações</h1>
+    <v-data-table
+      :headers="dataTable.headers"
+      :items="transactionDataTable"
+      :items-per-page="20"
+      :loading="dataTable.loading"
+      dense
+      class="elevation-1"
+    >
       <template v-slot:item.value="{ item }">
         {{ formatCurrency(item.value) }}
       </template>
 
       <template v-slot:item.date="{ item }">
-        {{ formatDate(new Date(item.date), {onlyDate: true}) }}
+        {{ formatDate(new Date(item.date), { onlyDate: true }) }}
       </template>
 
       <template v-slot:item.type="{ item }">
         <v-chip
-            :color="item.type === 'INCOME' ? 'green' : 'red'"
-            dark
-            class="mb-1 mt-1"
-          >
+          :color="item.type === 'INCOME' ? 'green' : 'red'"
+          dark
+          class="mb-1 mt-1"
+        >
           {{ item.type }}
         </v-chip>
       </template>

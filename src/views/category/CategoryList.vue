@@ -37,7 +37,7 @@
         <v-icon small class="mr-2" @click="handleClickUpdate(item)">
           mdi-pencil
         </v-icon>
-          <v-icon small @click="handleClickDelete(item)"> mdi-delete </v-icon>
+        <v-icon small @click="handleClickDelete(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
     <h3>Última atualização:</h3>
@@ -48,9 +48,8 @@
 <script>
 import ModalDefault from '@/components/layout/ModalDefault.vue';
 import SubcategoryTable from '@/components/SubcategoryTable.vue';
-import {
-  emitEvent, insertMessage, clearMessages, getErrorMessage, formatDate,
-} from '@/core/utils';
+/*eslint-disable*/
+import { emitEvent, insertMessage, clearMessages, getErrorMessage, formatDate } from '@/core/utils';
 import config from '@/core/config';
 
 export default {
@@ -82,7 +81,10 @@ export default {
             sortable: false,
           },
           {
-            text: 'Ações', value: 'actions', sortable: false, align: 'center',
+            text: 'Ações',
+            value: 'actions',
+            sortable: false,
+            align: 'center',
           },
         ],
       },
@@ -120,9 +122,7 @@ export default {
     clearDeleteSelected() {
       this.delete.selected = null;
     },
-    handleClickUpdate({
-      id, name, description, type,
-    }) {
+    handleClickUpdate({ id, name, description, type }) {
       const target = {
         id,
         name,
@@ -141,7 +141,7 @@ export default {
     },
     lastUpdate() {
       const { lastUpdate } = this.$store.state.category;
-      return lastUpdate ? formatDate(lastUpdate) : null;
+      return lastUpdate ? formatDate(lastUpdate, {}) : null;
     },
   },
   async mounted() {
