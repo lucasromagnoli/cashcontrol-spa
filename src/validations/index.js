@@ -18,3 +18,15 @@ extend('lengthMax', {
   params: ['max'],
   message: '{_field_} precisa ter no máximo {max} caracteres.',
 });
+
+extend('length', {
+  validate: (value, { length }) => value.length === Number(length),
+  params: ['length'],
+  message: '{_field_} precisa ter {length} caracteres.',
+});
+
+extend('valueGreaterThan', {
+  validate: (value, { greater }) => value > greater,
+  params: ['greater'],
+  message: '{_field_} precisa ser maior que {greater}.',
+});

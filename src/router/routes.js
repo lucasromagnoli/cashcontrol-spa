@@ -4,11 +4,13 @@ import CategoryForm from '@/views/category/CategoryForm.vue';
 import CategoryList from '@/views/category/CategoryList.vue';
 import OriginList from '@/views/origin/OriginList.vue';
 import OriginForm from '@/views/origin/OriginForm.vue';
-import Income from '@/views/transaction/Income.vue';
-import Expense from '@/views/transaction/Expense.vue';
+import IncomeList from '@/views/income/IncomeList.vue';
+import IncomeForm from '@/views/income/IncomeForm.vue';
+import ExpenseList from '@/views/expense/ExpenseList.vue';
+import ExpenseForm from '@/views/expense/ExpenseForm.vue';
 import Transaction from '@/views/transaction/Transaction.vue';
-import SubcategoryList from '../views/subcategory/SubcategoryList.vue';
-import SubcategoryForm from '../views/subcategory/SubcategoryForm.vue';
+import SubcategoryList from '@/views/subcategory/SubcategoryList.vue';
+import SubcategoryForm from '@/views/subcategory/SubcategoryForm.vue';
 
 export default [
   {
@@ -69,16 +71,34 @@ export default [
     meta: { title: 'Movimentações' },
   },
   {
-    path: '/income',
-    name: 'Income',
-    component: Income,
+    path: '/income/list',
+    alias: ['/income'],
+    name: 'IncomeList',
+    component: IncomeList,
     meta: { title: 'Receitas' },
   },
   {
-    path: '/expense',
-    name: 'Expense',
-    component: Expense,
+    path: '/income/form',
+    alias: ['/income/add'],
+    name: 'IncomeForm',
+    props: true,
+    component: IncomeForm,
+    meta: { title: 'Receitas - Cadastrar' },
+  },
+  {
+    path: '/expense/list',
+    alias: ['/expense'],
+    name: 'ExpenseList',
+    component: ExpenseList,
     meta: { title: 'Despesas' },
+  },
+  {
+    path: '/expense/form',
+    alias: ['/expense/add'],
+    name: 'ExpenseForm',
+    props: true,
+    component: ExpenseForm,
+    meta: { title: 'Despesas - Cadastrar' },
   },
   {
     path: '*',

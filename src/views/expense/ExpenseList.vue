@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'Expense',
+  name: 'ExpenseList',
 };
 </script>
 

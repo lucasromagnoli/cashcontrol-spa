@@ -114,22 +114,44 @@ export default {
         },
         {
           icon: 'mdi-home',
+          title: 'Receitas',
+          childrens: [
+            {
+              icon: 'mdi-inbox-arrow-down',
+              title: 'Cadastrar',
+              route: { name: 'IncomeForm' },
+            },
+            {
+              icon: 'mdi-inbox-arrow-down',
+              title: 'Listar',
+              route: { name: 'IncomeList' },
+            },
+          ],
+        },
+        {
+          icon: 'mdi-home',
+          title: 'Despesas',
+          childrens: [
+            {
+              icon: 'mdi-inbox-arrow-down',
+              title: 'Cadastrar',
+              route: { name: 'ExpenseForm' },
+            },
+            {
+              icon: 'mdi-inbox-arrow-down',
+              title: 'Listar',
+              route: { name: 'ExpenseList' },
+            },
+          ],
+        },
+        {
+          icon: 'mdi-home',
           title: 'Transações',
           childrens: [
             {
               icon: 'mdi-inbox-arrow-down',
               title: 'Movimentações',
               route: { name: 'Transaction' },
-            },
-            {
-              icon: 'mdi-inbox-arrow-down',
-              title: 'Receitas',
-              route: { name: 'Income' },
-            },
-            {
-              icon: 'mdi-inbox-arrow-down',
-              title: 'Despesas',
-              route: { name: 'Expense' },
             },
           ],
         },
