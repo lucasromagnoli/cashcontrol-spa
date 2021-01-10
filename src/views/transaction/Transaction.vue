@@ -32,7 +32,9 @@
 </template>
 
 <script>
-import { formatCurrency, formatDate } from '@/core/utils';
+/* eslint-disable */
+import { formatDate, formatCurrency, insertMessage, getErrorMessage } from '@/core/utils';
+import config from '@/core/config';
 
 export default {
   name: 'Transaction',
@@ -67,11 +69,11 @@ export default {
     try {
       await this.$store.dispatch('transaction/findTransactions', false);
     } catch (error) {
-      // insertMessage({
-      //   type: config.messages.ERROR,
-      //   text: getErrorMessage(error),
-      //   dismissible: true,
-      // });
+      insertMessage({
+        type: config.messages.ERROR,
+        text: getErrorMessage(error),
+        dismissible: true,
+      });
     }
     this.dataTable.loading = false;
   },
